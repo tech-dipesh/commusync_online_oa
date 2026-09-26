@@ -1,19 +1,17 @@
 {
-  "name": "server",
+  "name": "task-manager-server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node --watch app.js",
+    "start": "node app.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@types/express": "^5.0.6",
-    "express": "^5.2.1"
-  },
-  "devDependencies": {
-    "dotenv": "^18.0.4"
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.10.2",
+    "zod": "^4.6.5"
   }
 }

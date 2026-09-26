@@ -1,7 +1,33 @@
-import express from "express"
 import "dotenv/config"
-const app=express()
-const port=process.env.PORT
-app.listen(port, () => {
-  console.log("Server is Listeing on the port", port);
+import express from "express"
+import cors from "cors"
+import mongoose from "mongoose"
+
+
+const app = express()
+
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }))
+app.use(express.json())
+app.use((req, res) => {
+  res.status(404).json({ message: `Route ${req.method} ${req.path} not found` })
 })
+
+app.use((error, req, res, next) => {
+  if (res.headersSent) {
+    next(error)
+    return
+  }
+  console.error(error)
+  res.status(500).json({ message: "Something went wrong" })
+})
+
+const port = process.env.PORT || 4000
+const mongodbUri = process.env.MONGODB_URI
+
+try {
+  await mongoose.connect(mongodbUri)
+  app.listen(port, () => console.log(`Server running on http://localhost:${port}`))
+  
+} catch (error) {
+  console.error("Failed to connect to MongoDB:", error)
+}
