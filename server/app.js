@@ -2,7 +2,7 @@ import "dotenv/config"
 import express from "express"
 import cors from "cors"
 import mongoose from "mongoose"
-import {getTasks } from "./controller.js"
+import { createTask, deleteTask, getTasks, updateTask } from "./controller.js"
 
 const asyncHandler = (handler) => (req, res, next) => {
   handler(req, res, next).catch(next)
@@ -14,6 +14,9 @@ app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }))
 app.use(express.json())
 
 app.get("/api/tasks", asyncHandler(getTasks))
+app.post("/api/tasks", asyncHandler(createTask))
+app.patch("/api/tasks/:id", asyncHandler(updateTask))
+app.delete("/api/tasks/:id", asyncHandler(deleteTask))
 
 app.use((req, res) => {
   res.status(404).json({ message: `Route ${req.method} ${req.path} not found` })
