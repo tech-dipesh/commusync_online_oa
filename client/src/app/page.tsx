@@ -1,22 +1,18 @@
 "use client"
 import { useEffect, useState } from "react"
 import type { SubmitEvent } from "react"
-
 interface Task {
   _id: string
   title: string
   completed: boolean
   createdAt: string
 }
-
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api"
-
 export default function HomePage() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [title, setTitle] = useState("")
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-
   useEffect(() => {
     fetch(`${apiUrl}/tasks`)
       .then((res) => res.json())
@@ -24,34 +20,28 @@ export default function HomePage() {
       .catch(() => setError("Some error occured"))
       .finally(() => setLoading(false))
   }, [])
-
   async function handleAdd(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!title) return
-
     const res = await fetch(`${apiUrl}/tasks`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ title})
     })
-
     if (!res.ok) {
       setError("Failed to add task")
       return
     }
-
     const task = await res.json()
     setTasks((current) => [task, ...current])
     setTitle("")
   }
-
   async function Toggle(id: string, completed: boolean) {
       const res = await fetch(`${apiUrl}/tasks/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ completed })
       })
-  
       if (!res.ok) {
         setError("error occured")
         return
@@ -59,7 +49,6 @@ export default function HomePage() {
       const updated = await res.json()
       setTasks((current) => current.map((task) => (task._id === id ? updated : task)) )
     }
- 
     async function Delete(id: string) {
         const res = await fetch(`${apiUrl}/tasks/${id}`, { method: "DELETE" })
         if (!res.ok) {
@@ -73,7 +62,6 @@ export default function HomePage() {
       <h1 className="text-2xl text-slate-100">
         Task Manager
       </h1>
-
       <form onSubmit={handleAdd} className="flex gap-3">
         <input value={title} onChange={(e) => setTitle(e.target.value)}
           placeholder="Please Enter"
@@ -83,13 +71,11 @@ export default function HomePage() {
           Add task
         </button>
       </form>
-
       {error && (
         <p className="rounded-lg border bg-red-900 px-4 py-2 text-sm text-red-400">
           {error}
         </p>
       )}
-
       {loading ? (
         <p className="text-slate-400">Loading...</p>
       ) : tasks.length === 0 ? (

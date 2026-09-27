@@ -1,5 +1,4 @@
 import mongoose from "mongoose"
-
 const taskSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true, maxlength: 200 },
@@ -7,5 +6,4 @@ const taskSchema = new mongoose.Schema(
   },
   { timestamps: { createdAt: true, updatedAt: false } }
 )
-
 export const Task = mongoose.model("Task", taskSchema)

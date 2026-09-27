@@ -4,7 +4,6 @@ export async function getTasks(req, res) {
   const tasks = await Task.find().sort({ createdAt: -1 })
   res.status(200).json(tasks)
 }
-
 export async function createTask(req, res) {
   const {title}=req.body ?? {}
   if (!title) {
@@ -13,7 +12,6 @@ export async function createTask(req, res) {
   const task = await Task.create({title})
   res.status(201).json(task)
 }
-
 export async function updateTask(req, res) {
   const { completed } = req.body ?? {};
   if (!completed || typeof completed !== 'boolean') {
@@ -27,10 +25,8 @@ export async function updateTask(req, res) {
     res.status(404).json({ message: "Task not found" })
     return
   }
-
   res.status(200).json(task)
 }
-
 export async function deleteTask(req, res) {
   const { id } = req.params ?? {};
   const output = await Task.findByIdAndDelete(id)
