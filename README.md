@@ -7,4 +7,6 @@ cd client && pnpm install && pnpm dev
 ## Stack
 Next.js (App Router) + TypeScript + Tailwind.
 Express + Mongoose, JavaScript, Mongoose
+## Image:
+![Homepage](home.png)
 # Thanks.
