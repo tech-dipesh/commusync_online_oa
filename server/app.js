@@ -2,12 +2,19 @@ import "dotenv/config"
 import express from "express"
 import cors from "cors"
 import mongoose from "mongoose"
+import {getTasks } from "./controller.js"
 
+const asyncHandler = (handler) => (req, res, next) => {
+  handler(req, res, next).catch(next)
+}
 
 const app = express()
 
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:3000" }))
 app.use(express.json())
+
+app.get("/api/tasks", asyncHandler(getTasks))
+
 app.use((req, res) => {
   res.status(404).json({ message: `Route ${req.method} ${req.path} not found` })
 })
