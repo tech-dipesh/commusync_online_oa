@@ -10,21 +10,19 @@ export async function createTask(req, res) {
   if (!title) {
     return res.status(400).json({message: "validation failed", errors: "Please Enter a Title"})
   }
-  const task = await Task.create(result.data)
+  const task = await Task.create({title})
   res.status(201).json(task)
 }
 
 export async function updateTask(req, res) {
   const { completed } = req.body ?? {};
-  if (!completed || typeof completed == 'boolean') {
+  if (!completed || typeof completed !== 'boolean') {
     res.status(400).json({
       message: "Validation failed",
       errors: "Please Enter a completed on either true of the false form"
     })
   }
-  const task = await Task.findByIdAndUpdate(req.params.id, result.data, {
-    new: true
-  })
+  const task = await Task.findByIdAndUpdate(req.params.id, {completed})
   if (!task) {
     res.status(404).json({ message: "Task not found" })
     return

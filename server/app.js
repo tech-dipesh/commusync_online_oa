@@ -36,6 +36,7 @@ const mongodbUri = process.env.MONGODB_URI
 
 try {
   await mongoose.connect(mongodbUri)
+  console.log("Database is Connected");
   app.listen(port, () => console.log(`Server running on http://localhost:${port}`))
   
 } catch (error) {
